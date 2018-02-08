@@ -1,4 +1,4 @@
-<?php require_once 'includes' . DIRECTORY_SEPARATOR . 'header.php'; ?>
+<?php FUNCTIONS::getHeader(); ?>
 
 <div class="row col-lg-8 col-xl-4 col-md-8 justify-content-center menuBody">
     <h2 class="col-lg-12 text-center">Menu Principal</h2>
@@ -20,4 +20,4 @@
 
 
 
-<?php require_once 'includes' . DIRECTORY_SEPARATOR . 'footer.php'; ?>
+<?php FUNCTIONS::getFooter(); ?>

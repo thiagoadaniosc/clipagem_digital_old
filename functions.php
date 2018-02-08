@@ -97,8 +97,8 @@ class FUNCTIONS {
                 echo $arquivo;
                 $pdf->addPDF('uploads'. DIRECTORY_SEPARATOR . $arquivo, 'all');
             }
-            $pdf->merge('file', 'uploads'. DIRECTORY_SEPARATOR . $fileName);
-            header('Location: uploads/' . $fileName);
+            $pdf->merge('file', 'pesquisas'. DIRECTORY_SEPARATOR . $fileName);
+            header('Location: pesquisas/' . $fileName);
             
             //$pdf->merge('donwload', 'uploads'. DIRECTORY_SEPARATOR . 'testedownload.pdf');
             //unset($_SESSION['arquivos']);
@@ -200,6 +200,14 @@ class FUNCTIONS {
         
         public static function logon(){
             session_destroy();
+        }
+
+        public static function getHeader(){
+            require_once 'includes' . DIRECTORY_SEPARATOR . 'header.php';
+        }
+
+        public static function getFooter(){
+            require_once 'includes' . DIRECTORY_SEPARATOR . 'footer.php';
         }
     } 
     

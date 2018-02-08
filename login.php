@@ -1,5 +1,5 @@
-<?php require_once 'includes' . DIRECTORY_SEPARATOR . 'header.php'; ?>
-<div class="row col-lg-6 col-xl-4 col-md-10 baseBody justify-content-center" style="overflow:auto;">
+<?php FUNCTIONS::getHeader(); ?>
+<div class="row col-lg-7 col-xl-4 col-md-10 baseBody justify-content-center" style="overflow:auto;">
     <img src="img/brasao.jpg" class="img-fluid" alt="" style="height:150px;">
     <h4 class="col-lg-12 text-center text-primary">Autenticação</h4>
     <?php if (isset($_GET['login']) && $_GET['login'] == 'false'){?>
@@ -23,4 +23,4 @@
 
     </p>
 </div>
-<?php require_once 'includes' . DIRECTORY_SEPARATOR . 'footer.php'; ?>
+<?php FUNCTIONS::getFooter(); ?>

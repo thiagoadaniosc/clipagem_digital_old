@@ -1,6 +1,6 @@
 <?php FUNCTIONS::getHeader(); ?>
 <div class="row col-lg-11 col-xl-8 col-md-8 justify-content-center formBody">
-    <h1 class="text-center">Cadastro de Clipagem</h1>
+    <h1 class="text-center">Editar Clipagem</h1>
     <form class="col-lg-12 col-sm-8 row" method="post" action="/cadastrar" enctype="multipart/form-data">
         <div class="form-group col-lg-12">
             <!-- <label for="titulo">Título</label> -->
@@ -14,6 +14,8 @@
             </div>
             <!-- <small id="tituloHelp" class="form-text text-muted">Insirá o titulo da matéria</small> -->
         </div>
+
+        <input type="hidden" name="id" value="">
 
         <div class="form-group col-lg-6">
             <input type="text" class="form-control col-lg-12" name="veiculo" id="veiculo" placeholder="Veículo" required>
@@ -58,7 +60,7 @@
             <button class="float-left btn btn-danger col-lg-5" style="height: 50px;" type="button"  onclick="window.location.href='/'">
                 <i class="fa fa-times" aria-hidden="true"></i> CANCELAR </button>
 
-            <button class="float-right btn btn-primary col-lg-5" style="height: 50px;" type="submit">Cadastrar
+            <button class="float-right btn btn-primary col-lg-5" style="height: 50px;" type="submit">Editar
                 <i class="fa fa-check" aria-hidden="true"></i>
             </button>
 

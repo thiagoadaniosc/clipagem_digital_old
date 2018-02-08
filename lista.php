@@ -1,8 +1,8 @@
-<?php require_once 'includes' . DIRECTORY_SEPARATOR . 'header.php'; ?>
-<div class="row col-lg-12 col-xl-10 col-md-12 baseBody" style="overflow:auto;">
-    <h1 class="text-left col-lg-4" style="padding: 20px;">Lista de Clipagens</h1>
+<?php FUNCTIONS::getHeader(); ?>
+<div class="row col-lg-12 col-xl-11 col-md-12 baseBody" style="overflow:auto;">
+    <h1 class="text-left col-lg-3" style="padding: 20px;">Lista de Clipagens</h1>
 
-    <form style="padding: 20px;" class="col-lg-8 col-md-12 col-sm-12 justify-content-end">
+    <form style="padding: 20px;" class="col-lg-9 col-md-12 col-sm-12 justify-content-end">
         <div class="form-inline justify-content-end">
             <select class="form-control" name="pesquisar" style="height: 50px; border-radius: 0">
                 <option value="todos">Todos</option>
@@ -14,8 +14,8 @@
                 <option value="editoria">Editoria</option>
             </select>
             <input class="form-control" name="valor" type="search" placeholder="Pesquisar...">
-            <select class="form-control col-lg-2 col-xl-2" name="mes" style="height: 50px; border-radius: 0">
-                <option value="">Todos os meses</option>
+            <select class="form-control col-lg-2 col-xl-3" name="mes" style="height: 50px; border-radius: 0">
+                <option value="">Meses</option>
                 <option value="01">Janeiro</option>
                 <option value="02">Fevereiro</option>
                 <option value="03">Março</option>
@@ -29,12 +29,12 @@
                 <option value="11">Novembro</option>
                 <option value="12">Dezembro</option>
             </select>
-            <input class="form-control col-lg-2 col-xl-1" type="number" name="ano" placeholder="Ano">
+            <input class="form-control col-lg-3 col-xl-2" type="number" name="ano" placeholder="Ano">
             <button type="submit" class="btn btn-primary form-control" style="padding:14px; border-radius: 0">Pesquisar</button>
 
         </div>
     </form>
-    <a href="/download" class="text-center col-lg-12" style="padding-left: 20px" target="_blank">Baixar Pesquisa</a>
+    <a href="/pesquisa" class="text-center col-lg-12" style="padding-left: 20px" target="_blank">Baixar Pesquisa</a>
     <?php if(isset($_GET['valor'])): ?>
     <p class="text-center col-lg-12" style="padding: 0; margin-bottom: 0"><b> Pesquisa: </b> <?=$_GET['valor']?>
         <?php if (isset($_GET['mes']) && !empty($_GET['mes'])) : ?>
@@ -99,4 +99,4 @@
     </table>
 
 </div>
-<?php require_once 'includes' . DIRECTORY_SEPARATOR . 'footer.php'; ?>
+<?php FUNCTIONS::getFooter(); ?>

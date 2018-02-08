@@ -7,7 +7,7 @@ $request_uri = explode("?",$_SERVER['REQUEST_URI']);
 $request_uri = $request_uri[0];
 $request_method = $_SERVER['REQUEST_METHOD'];
 $security_flag = true;
-$version = '1.4 Beta';
+$version = '1.5 Beta';
 //$version = '1.8 Alfa';
 
 require_once 'includes' . DIRECTORY_SEPARATOR . 'db.php';
@@ -35,7 +35,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] != true) {
                 $lista = FUNCTIONS::listarClipagens();
                 require_once 'lista.php';
             }
-        } elseif($request_uri == '/download') {
+        } elseif($request_uri == '/pesquisa') {
             FUNCTIONS::downloadPesquisa();
         } elseif($request_uri == '/logon') {
             FUNCTIONS::logon();
@@ -71,7 +71,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] != true) {
             echo 'Editar Clipagem';
         }  elseif ($request_uri == '/deletar') {
             FUNCTIONS::deletarClipagem();
-        } elseif($request_uri == '/download') {
+        } elseif($request_uri == '/pesquisa') {
             FUNCTIONS::downloadPesquisa();
         } elseif ($request_uri == '/informacoes') {
             require_once 'informacoes.php';
