@@ -18,7 +18,7 @@ class FUNCTIONS {
         
         $conexao = cadastro_clipagem($conexao, $titulo, $veiculo, $editoria, $autor, $data, $pagina, $tipo, $tags);
         $id_clipagem = $conexao->insert_id;
-        $date = new DateTime($data);
+        $date = new DateTime($_POST['data']);
         $data = $date->format('d-m-Y');
         $fileName = strtolower($titulo). '_' . strtolower($veiculo). '-' . $data . '.pdf';
         $fileName = str_replace(' ', '_', $fileName);
@@ -66,18 +66,56 @@ class FUNCTIONS {
     
     public static function listarClipagens() {
         $conexao = mysqlCon();
-        $lista = listar($conexao);
+        
+        $show = isset($_GET['show']) && !empty($_GET['show']) ? $_GET['show'] : 10;
+        $page = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
+        
+        if ($page == 1 ){
+            $inicio = 0;
+            $fim = $show;
+        } else {
+            $inicio = ($page-1) * $show;
+            $fim = $show;
+        }
+        //echo 'Inicio:' . $inicio . ' FIM:' . $fim;
+        $lista = listar($conexao, $inicio, $fim);
+        
         return $lista;
     }
     
+    public static function totalRegClipagens(){
+        $conexao = mysqlCon();
+        $totalReg = getNumRows($conexao);
+        return $totalReg;
+    }
+    
     public static function buscarClipagens() {
+        $conexao = mysqlCon();
         $pesquisar = $_GET['pesquisar'];
         $valor = $_GET['valor'];
+        
+        $show = isset($_GET['show']) && !empty($_GET['show']) ? $_GET['show'] : 10;
+        $page = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
+        
+        if ($page == 1 ){
+            $inicio = 0;
+            $fim = $show;
+        } else {
+            $inicio = ($page-1) * $show;
+            $fim = $show;
+        }        
+
+
         $ano = isset($_GET['ano']) && !empty($_GET['ano']) ? $_GET['ano'] : '';
         $mes = isset($_GET['mes']) && !empty($_GET['mes']) ? '/' . $_GET['mes'] . '/' : '';
-        $conexao = mysqlCon();
-        $lista = buscar($conexao,$pesquisar, $valor, $ano, $mes);
+        
+        $lista = buscar($conexao,$pesquisar, $valor, $ano, $mes, $inicio, $fim);
         return $lista;
+    }
+    
+    public static function buscarClipagem($id){
+        $conexao = mysqlCon();
+        
     }
     
     public static function deletarClipagem() {
@@ -108,7 +146,7 @@ class FUNCTIONS {
     }
     
     public static function login(){
-       // $conexao = mysqlCon();
+        // $conexao = mysqlCon();
         $user = $_POST['usuario'];
         $pass = $_POST['senha'];
         /*
@@ -146,12 +184,12 @@ class FUNCTIONS {
                     $res = ldap_search($connect, $dn, $filter);
                     
                     $entries = ldap_get_entries($connect, $res);
-
+                    
                     $_SESSION['nome'] = $entries[0]['cn'][0];
                     
                     $isComunicacao = preg_grep("/^.*Comunicação.*/", $entries[0]['memberof']);
                     
-
+                    
                     if ($isComunicacao != null) {
                         $_SESSION['admin'] = true;
                         echo 'É Comunicação';
@@ -201,11 +239,11 @@ class FUNCTIONS {
         public static function logon(){
             session_destroy();
         }
-
+        
         public static function getHeader(){
             require_once 'includes' . DIRECTORY_SEPARATOR . 'header.php';
         }
-
+        
         public static function getFooter(){
             require_once 'includes' . DIRECTORY_SEPARATOR . 'footer.php';
         }

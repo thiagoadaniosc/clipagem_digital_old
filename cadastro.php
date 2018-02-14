@@ -38,11 +38,11 @@
 
         <div class=" form-group col-lg-6 justify-content-center ">
             <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-primary active" style="padding: 14px; border-radius: 0;">
-                    <input type="radio" name="tipo" id="option1" autocomplete="off" value="capa" checked>Capa
-                </label>
                 <label class="btn btn-primary" style="padding: 14px; border-radius: 0;">
-                    <input type="radio" name="tipo" id="option2" autocomplete="off" value="conteudo">Conteudo Interno
+                    <input type="radio" name="tipo" id="option1" autocomplete="off" value="capa">Capa
+                </label>
+                <label class="btn btn-primary active" style="padding: 14px; border-radius: 0;">
+                    <input type="radio" name="tipo" id="option2" autocomplete="off" value="conteudo" checked>Conteudo Interno
                 </label>
             </div>
         </div>

@@ -3,6 +3,12 @@
 <div class="row col-lg-8 col-xl-4 col-md-8 menuBody">
     <h2 class="col-lg-12 text-center mb-5">Atualizações</h2>
 
+     <h3 class="col-lg-12 mb-3">- Versão 1.5 Beta e 1.6 Beta</h3>
+    <ul>
+        <li>Sistema de Paginação.</li>
+        <li>Correção de bugs.</li>
+    </ul>
+
     <h3 class="col-lg-12 mb-3">- Versão 1.4 Beta</h3>
     <ul>
         <li>Sistema de login com usuários da Rede Local.</li>
