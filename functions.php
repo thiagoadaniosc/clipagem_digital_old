@@ -1,5 +1,24 @@
 <?php
 class FUNCTIONS {
+
+    public static function cadastrarClipagemTest() { 
+        $conexao = mysqlCon();
+        
+        $titulo = 'teste';
+        $veiculo = 'teste';
+        $editoria = 'teste';
+        $autor ='teste';
+        $data = '07/12/1995';
+        $pagina = 2;
+        $tipo ='teste';
+        $tags = 'teste';
+        
+        $conexao = cadastro_clipagem($conexao, $titulo, $veiculo, $editoria, $autor, $data, $pagina, $tipo, $tags);
+        $id_clipagem = $conexao->insert_id;
+
+        cadastro_arquivo($conexao, $id_clipagem, 'teste.pdf');
+        
+    }
     
     public static function cadastrarClipagem() {
         
@@ -18,6 +37,7 @@ class FUNCTIONS {
         
         $conexao = cadastro_clipagem($conexao, $titulo, $veiculo, $editoria, $autor, $data, $pagina, $tipo, $tags);
         $id_clipagem = $conexao->insert_id;
+
         $date = new DateTime($_POST['data']);
         $data = $date->format('d-m-Y');
         

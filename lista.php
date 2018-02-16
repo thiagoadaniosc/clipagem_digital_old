@@ -78,7 +78,7 @@
     </p>
     <?php endif; ?>
     <table class="table table-bordered table-hover table-sm col-lg-12">
-        <caption><?= FUNCTIONS::totalRegClipagens(); ?> - Clipagens encontradas</caption>
+      
         <thead class="thead-light">
             <th scrope="col">#</th>
             <th scrope="col">Título</th>
@@ -126,7 +126,27 @@
             </tr>
             <?php endwhile; ?>
         </tbody>
+        <caption> 
+        <?php
+        $regInicial = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
+        $page = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
+        $regFinal = isset($_GET['show']) && !empty($_GET['show']) ? $_GET['show'] : 10;
         
+        if ($regInicial != 1) {
+            $regInicial = ($regInicial -1) * $regFinal;
+        } else {
+            $regInicial = 1;
+        }
+
+        if (($regFinal * $page) >= FUNCTIONS::totalRegClipagens()) {
+            $regFinal = FUNCTIONS::totalRegClipagens();
+        } else {
+            $regFinal = $regFinal * $page;
+        }
+
+        ?>
+        Listando <?= $regInicial ?> de <?= $regFinal ?> para <?= FUNCTIONS::totalRegClipagens(); ?> - Clipagens encontradas
+        </caption>
     </table>
     
     <div class="row col-lg-12 justify-content-center">

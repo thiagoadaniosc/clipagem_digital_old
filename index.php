@@ -80,8 +80,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] != true) {
             FUNCTIONS::downloadPesquisa();
         } elseif ($request_uri == '/informacoes') {
             require_once 'informacoes.php';
-        } elseif ($request_uri == '/teste2') { 
-            FUNCTIONS::uploadArquivos();
+        } elseif ($request_uri == '/teste') { 
+            FUNCTIONS::cadastrarClipagemTest();
         } else {
             require_once 'menu.php';
         }
