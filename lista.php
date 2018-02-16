@@ -119,7 +119,7 @@
                 <td>
                     <a class="badge badge-primary" href="uploads/<?=$dados['nome']?>" target="_blank">Visualizar</a>
                     <?php if ($_SESSION['admin'] == true):?> 
-                    <a class="badge badge-secondary" onclick="return false" onmousemove="alert('Função Desativada !')" href="/editar?id=<?=$dados['id_clipagem']?>">Editar</a>
+                    <a class="badge badge-secondary" href="/editar?id=<?=$dados['id_clipagem']?>">Editar</a>
                     <a class="badge badge-danger" onclick="return confirm('Tem certeza que deseja remover este item ? ')" href="/deletar?id=<?=$dados['id_clipagem']?>">Remover</a>
                     <?php endif;?>
                 </td>

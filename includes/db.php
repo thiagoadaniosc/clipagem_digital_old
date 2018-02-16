@@ -46,9 +46,9 @@ function listar($conexao, $inicio, $fim) {
 }
 
 function buscar($conexao,$pesquisar,$valor, $ano, $mes, $inicio, $fim){
-   // echo 'Inicio: ' . $inicio . 'Fim: ' . $fim;
-     $oderQuery = ' ORDER BY RIGHT(c.data, 4) DESC, SUBSTRING(c.data, 4, 3) DESC, SUBSTRING(c.data, 1, 2) DESC  ';
-   
+    // echo 'Inicio: ' . $inicio . 'Fim: ' . $fim;
+    $oderQuery = ' ORDER BY RIGHT(c.data, 4) DESC, SUBSTRING(c.data, 4, 3) DESC, SUBSTRING(c.data, 1, 2) DESC  ';
+    
     
     if ($pesquisar == 'titulo') {
         $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.titulo LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%' $oderQuery LIMIT $inicio, $fim";
@@ -72,6 +72,34 @@ function buscar($conexao,$pesquisar,$valor, $ano, $mes, $inicio, $fim){
     return $results;
 }
 
+function buscarClipagem($conexao, $id) {
+    $query_clipagem = "SELECT * from clipagens c where c.ID = $id;";
+    $query_arquivo = "SELECT a.id_clipagem, a.nome from arquivos a where a.id_clipagem = $id;";
+    $resultClipagem = $conexao->query($query_clipagem);
+    $clipagem;
+    $arquivo;
+    
+    if ($resultClipagem->num_rows < 1) {
+        header('Location: /clipagens');
+    } else {
+        foreach($resultClipagem as $c) {
+            $clipagem = $c;
+        }
+        
+        $conexao = mysqlCon();
+        
+        $resultArquivo = $conexao->query($query_arquivo);
+        
+        foreach($resultArquivo as $a) {
+            $arquivo = $a;
+        }
+        
+        $results = array_merge($clipagem, $arquivo);
+        
+        return $results;
+    }
+}
+
 function deletar($conexao, $id) {
     $query = "DELETE FROM clipagens WHERE ID = $id";
     $conexao->query($query);
@@ -86,4 +114,29 @@ function checkLogin($conexao, $user, $pass) {
         return false;
     }
     
+    
+    
+}
+
+function buscarArquivo($conexao, $id_clipagem){
+    $query = "SELECT * FROM arquivos where id_clipagem = $id_clipagem";
+    $results = $conexao->query($query);
+    return $results->fetch_assoc();
+    
+}
+
+function atualizarArquivo($conexao, $id, $fileName){
+    echo $fileName;
+    $query = "UPDATE arquivos a SET a.nome = '$fileName' where id = $id";
+    $results = $conexao->query($query);
+    return $conexao->affected_rows;
+
+}
+
+function atualizarClipagem($conexao,$id, $titulo, $veiculo, $editoria, $autor, $data, $pagina, $tipo, $tags) {
+    //echo 'ID: '.  $id;
+    $query = "UPDATE clipagens c SET c.titulo = '$titulo', c.veiculo = '$veiculo', c.editoria = '$editoria', c.autor = '$autor', c.data = '$data', c.pagina =" . intval($pagina) . ", c.tipo = '$tipo', c.tags = '$tags' where c.ID = $id";
+    $conexao->query($query);
+    //echo 'Linhas Afetadas' . $conexao->affected_rows;
+   // echo $conexao->error;
 }

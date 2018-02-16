@@ -18,9 +18,34 @@
 <script src="js/bootstrap.min.js" type="text/javascript"></script>
 
 
+
+
+
 <script src="js/tagsinput.js"></script>
 
+<?php if ($request_uri == "/editar"): ?>
+<script>
+ $("#file").fileinput({
+    initialPreview: [
+        "/uploads/<?= $clipagem['nome'] ?>",
+    ],
+    initialPreviewAsData: true, // allows you to set a raw markup
+    initialPreviewFileType: 'pdf', // image is the default and can be overridden in config below
+   // initialPreviewDownloadUrl:' <embed src="/uploads/<?=$clipagem['nome']?>" type="application/pdf"></embed>', // includes the dynamic key tag to be replaced for each config
+    initialPreviewConfig: [
+        {type: "pdf", caption: "<?= $clipagem['nome']?>", url: "/uploads/<?= $clipagem['nome']?>", key: <?php echo intval($clipagem['ID'])?>, url: null},
+        
+    ],
+    theme: 'fa',
+    language: 'pt-BR',
+    allowedFileExtensions: ['pdf'],
+});
+</script>
+
+<?php endif; ?>
+
 <script src="js/script.js"></script>
+
 
 
 

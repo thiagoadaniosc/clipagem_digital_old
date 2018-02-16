@@ -20,7 +20,11 @@ class FUNCTIONS {
         $id_clipagem = $conexao->insert_id;
         $date = new DateTime($_POST['data']);
         $data = $date->format('d-m-Y');
-        $fileName = strtolower($titulo). '_' . strtolower($veiculo). '-' . $data . '.pdf';
+        
+        
+        $titulo = FUNCTIONS::removeAccents($titulo);
+        
+        $fileName = trim(mb_strtolower($titulo, 'UTF-8')). '_' . trim(mb_strtolower($veiculo, 'UTF-8')). '-' . $data . '.pdf';
         $fileName = str_replace(' ', '_', $fileName);
         
         FUNCTIONS::uploadArquivos($conexao, $id_clipagem, $fileName);
@@ -61,6 +65,53 @@ class FUNCTIONS {
     }
     
     public static function editarClipagem() {
+        require_once 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        $pdf = new \Clegginabox\PDFMerger\PDFMerger;
+        $conexao = mysqlCon();
+        
+        $titulo = $_POST['titulo'];
+        $id = $_POST['id'];
+        $veiculo = $_POST['veiculo'];
+        $editoria = $_POST['editoria'];
+        $autor = $_POST['autor'];
+        $data = $_POST['data'];
+        $date = new DateTime($data);
+        $data = $date->format('d/m/Y');
+        $pagina = $_POST['pagina'];
+        $tipo = $_POST['tipo'];
+        $tags = $_POST['tags'];
+        
+        
+        
+        atualizarClipagem($conexao,$id, $titulo, $veiculo, $editoria, $autor, $data, $pagina, $tipo, $tags);
+        
+        if (empty($_FILES['file']['name'][0])== false) {
+            
+            
+            
+            foreach ($_FILES['file']['tmp_name'] as $tempFile){
+                $pdf->addPDF($tempFile, 'all');        
+                echo $tempFile;
+            }
+            
+            $date = new DateTime($_POST['data']);
+            
+            $data = $date->format('d-m-Y');
+            
+            $titulo = FUNCTIONS::removeAccents($titulo);
+            
+            $fileName = trim(mb_strtolower($titulo, 'UTF-8')). '_' . trim(mb_strtolower($veiculo, 'UTF-8')). '-' . $data . '.pdf';
+            $fileName = str_replace(' ', '_', $fileName);
+            
+            $pdf->merge('file', 'uploads'. DIRECTORY_SEPARATOR . $fileName, 'P');
+            
+            $arquivo =  buscarArquivo($conexao, $id);
+            
+            atualizarArquivo($conexao, $arquivo['ID'], $fileName);
+        }
+        
+        header('Location: /clipagens');
+        
         
     }
     
@@ -104,8 +155,8 @@ class FUNCTIONS {
             $inicio = ($page-1) * $show;
             $fim = $show;
         }        
-
-
+        
+        
         $ano = isset($_GET['ano']) && !empty($_GET['ano']) ? $_GET['ano'] : '';
         $mes = isset($_GET['mes']) && !empty($_GET['mes']) ? '/' . $_GET['mes'] . '/' : '';
         
@@ -115,6 +166,7 @@ class FUNCTIONS {
     
     public static function buscarClipagem($id){
         $conexao = mysqlCon();
+        return buscarClipagem($conexao, $id);      
         
     }
     
@@ -151,8 +203,6 @@ class FUNCTIONS {
         $pass = $_POST['senha'];
         /*
         $checkLogin = checkLogin($conexao, $user, $pass);
-        
-        
         if ($checkLogin != false) {
             $_SESSION['login'] = true;
             $_SESSION['nome'] = $checkLogin['nome'];
@@ -245,8 +295,38 @@ class FUNCTIONS {
         }
         
         public static function getFooter(){
+            $request_uri = explode("?",$_SERVER['REQUEST_URI']);
+            $request_uri = $request_uri[0];
+            global $request_uri;
+            if ($request_uri == '/editar') {
+                
+                global $clipagem;       
+            }
+            
+            
             require_once 'includes' . DIRECTORY_SEPARATOR . 'footer.php';
         }
-    } 
+        
+        
+        
+        public static function fileExists($id, $nome){
+            $conexao = mysqlCon();
+            $arquivo = buscarArquivo($conexao, $id);
+            
+            if ($arquivo['nome'] == $nome) {
+                return true;
+            } else {
+                return false;
+            }            
+        }
+        public static function removeAccents($str) {
+            $a = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'Ā', 'ā', 'Ă', 'ă', 'Ą', 'ą', 'Ć', 'ć', 'Ĉ', 'ĉ', 'Ċ', 'ċ', 'Č', 'č', 'Ď', 'ď', 'Đ', 'đ', 'Ē', 'ē', 'Ĕ', 'ĕ', 'Ė', 'ė', 'Ę', 'ę', 'Ě', 'ě', 'Ĝ', 'ĝ', 'Ğ', 'ğ', 'Ġ', 'ġ', 'Ģ', 'ģ', 'Ĥ', 'ĥ', 'Ħ', 'ħ', 'Ĩ', 'ĩ', 'Ī', 'ī', 'Ĭ', 'ĭ', 'Į', 'į', 'İ', 'ı', 'Ĳ', 'ĳ', 'Ĵ', 'ĵ', 'Ķ', 'ķ', 'Ĺ', 'ĺ', 'Ļ', 'ļ', 'Ľ', 'ľ', 'Ŀ', 'ŀ', 'Ł', 'ł', 'Ń', 'ń', 'Ņ', 'ņ', 'Ň', 'ň', 'ŉ', 'Ō', 'ō', 'Ŏ', 'ŏ', 'Ő', 'ő', 'Œ', 'œ', 'Ŕ', 'ŕ', 'Ŗ', 'ŗ', 'Ř', 'ř', 'Ś', 'ś', 'Ŝ', 'ŝ', 'Ş', 'ş', 'Š', 'š', 'Ţ', 'ţ', 'Ť', 'ť', 'Ŧ', 'ŧ', 'Ũ', 'ũ', 'Ū', 'ū', 'Ŭ', 'ŭ', 'Ů', 'ů', 'Ű', 'ű', 'Ų', 'ų', 'Ŵ', 'ŵ', 'Ŷ', 'ŷ', 'Ÿ', 'Ź', 'ź', 'Ż', 'ż', 'Ž', 'ž', 'ſ', 'ƒ', 'Ơ', 'ơ', 'Ư', 'ư', 'Ǎ', 'ǎ', 'Ǐ', 'ǐ', 'Ǒ', 'ǒ', 'Ǔ', 'ǔ', 'Ǖ', 'ǖ', 'Ǘ', 'ǘ', 'Ǚ', 'ǚ', 'Ǜ', 'ǜ', 'Ǻ', 'ǻ', 'Ǽ', 'ǽ', 'Ǿ', 'ǿ', 'Ά', 'ά', 'Έ', 'έ', 'Ό', 'ό', 'Ώ', 'ώ', 'Ί', 'ί', 'ϊ', 'ΐ', 'Ύ', 'ύ', 'ϋ', 'ΰ', 'Ή', 'ή');
+            
+            $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o', 'Α', 'α', 'Ε', 'ε', 'Ο', 'ο', 'Ω', 'ω', 'Ι', 'ι', 'ι', 'ι', 'Υ', 'υ', 'υ', 'υ', 'Η', 'η');
+            return str_replace($a, $b, $str);
+        }
+        
+        
+    }
     
     ?>

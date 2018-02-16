@@ -9,8 +9,8 @@ $request_uri = $request_uri[0];
 $request_method = $_SERVER['REQUEST_METHOD'];
 $security_flag = true;
 $version = '1.6 Beta';
-$version_beta = '1.6 Beta';
-$version_alfa = '1.9 Alfa';
+$version_beta = '1.6.1 Beta';
+$version_alfa = '1.9.1 Alfa';
 
 require_once 'includes' . DIRECTORY_SEPARATOR . 'db.php';
 require_once 'functions.php'; 
@@ -61,8 +61,11 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] != true) {
                 $lista = FUNCTIONS::listarClipagens();
                 require_once 'lista.php';
             }
-        } elseif ($request_uri == '/editar') {
-            require_once 'cadastro.php';
+        } elseif ($request_uri == '/editar' && isset($_GET['id']) && $_GET['id'] != null && is_numeric($_GET['id'])) { 
+            $clipagem = FUNCTIONS::buscarClipagem($_GET['id']);
+            require_once 'editar.php';
+        } elseif ($request_uri == '/editar' && $request_method == 'POST') {
+            FUNCTIONS::editarClipagem();
         } elseif($request_uri == '/logon') {
             FUNCTIONS::logon();
             header('Location:/');
