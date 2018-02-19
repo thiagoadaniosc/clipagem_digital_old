@@ -205,7 +205,9 @@ class FUNCTIONS {
             $fileName = $_SESSION['usuario']. '_' . 'pesquisa.pdf';
             foreach($_SESSION['arquivos'] as $arquivo){
                 echo $arquivo;
+                if(file_exists('uploads/' . $arquivo)) {
                 $pdf->addPDF('uploads'. DIRECTORY_SEPARATOR . $arquivo, 'all');
+                }
             }
             $pdf->merge('file', 'pesquisas'. DIRECTORY_SEPARATOR . $fileName);
             header('Location: pesquisas/' . $fileName);

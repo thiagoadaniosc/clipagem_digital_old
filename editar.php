@@ -32,7 +32,12 @@
         </div>
 
         <div class="form-group col-lg-12">
-                <?php $data = new DateTime($clipagem['data']); ?>
+                
+                <?php
+                $clipagem['data'] = str_replace('/','-', $clipagem['data']);
+                $data = new DateTime($clipagem['data']);
+                ?>
+            
             <input class="form-control" type="date" value="<?= $data->format('Y-m-d'); ?>" name="data" placeholder="Data" required>
         </div>
 

@@ -3,9 +3,9 @@
     <h1 class="text-left col-lg-12" style="padding: 20px;">Lista de Clipagens</h1>
     
     <form style="padding: 20px;" class="row col-lg-12 col-xl-12 col-md-12 col-sm-12 justify-content-end">
-        <div class="col-lg-2 col-xl-2 col-md-12">
-            <label class="col-lg-6 float-left" style="padding-top:10px; padding-bottom:10px;" for="show">Exibir: </label>
-            <select class="form-control col-lg-5 col-xl-6 float-left" name="show" style="height: 50px; border-radius: 0">
+        <div class="col-lg-12 col-xl-3 col-md-12">
+            <label class="col-lg-4 col-xl-4 float-left" style="padding-top:10px; padding-bottom:10px;" for="show">Exibir: </label>
+            <select id="show" class="form-control col-lg-4 col-xl-4 float-left" name="show" style="height: 50px; border-radius: 0">
                 <?php if (isset($_GET['show']) && $_GET['show'] == 10): ?>
                 <option value="10"  selected="selected">10</option>
                 <option value="20">20</option>
@@ -33,8 +33,38 @@
                 <option value="100">100</option>
                 <?php endif; ?>
             </select>
+
+            <?php
+            if ($complete_request_uri == '/clipagens' || $complete_request_uri == '/') {
+                $showLink = '';
+            } else {
+
+                if ($complete_request_uri == '/clipagens?show=10' || $complete_request_uri == '/clipagens?show=20' ||
+                $complete_request_uri == '/clipagens?show=50' || $complete_request_uri == '/clipagens?show=100'
+                ) {
+                    $showLink = '';
+                }
+                elseif (explode("show=10", $complete_request_uri)[0] !== $complete_request_uri) {
+                    $showLink = explode("show=10&", $complete_request_uri);
+                    $showLink =  empty($showLink[1]) ? '' : $showLink[1];
+                }  elseif (explode("show=20", $complete_request_uri)[0] !== $complete_request_uri) {
+                    $showLink = explode("show=20&", $complete_request_uri);
+                    $showLink =  empty($showLink[1]) ? '' : $showLink[1];
+                } elseif (explode("show=50", $complete_request_uri)[0] !== $complete_request_uri) {
+                    $showLink =  empty($showLink[1]) ? '' : $showLink[1];
+                } elseif (explode("show=100", $complete_request_uri)[0] !== $complete_request_uri) {
+                    $showLink =  empty($showLink[1]) ? '' : $showLink[1];
+        
+                } else {
+                    $showLink = '';
+                }
+            
+                
+            } ?>
+            
+            <a data-link="<?= $showLink ?>" id="show-link" class="form-control btn btn-primary col-xl-4 col-lg-4" style="color: white; padding: 14px; border-radius: none;" onclick="showSubmit()">OK</a>
         </div>
-        <div class="form-inline justify-content-end col-xl-10">
+        <div class="form-inline justify-content-end col-xl-9">
             <select class="form-control" name="pesquisar" style="height: 50px; border-radius: 0">
                 <option value="todos">Todos</option>
                 <option value="titulo">Título</option>
