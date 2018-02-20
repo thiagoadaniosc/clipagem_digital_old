@@ -39,6 +39,29 @@ function getNumRows($conexao){
     return $conexao->query($query)->num_rows;
 }
 
+function getNumRowsBusca($conexao, $valor, $pesquisar, $ano, $mes){
+    $oderQuery = ' ORDER BY RIGHT(c.data, 4) DESC, SUBSTRING(c.data, 4, 3) DESC, SUBSTRING(c.data, 1, 2) DESC  ';
+    
+    if ($pesquisar == 'titulo') {
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.titulo LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%' $oderQuery";
+    } elseif($pesquisar == 'data') {
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.data LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%'";
+        
+    } elseif($pesquisar == 'tags') {
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.tags LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%' $oderQuery";
+    } elseif($pesquisar == 'autor') {
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.autor LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%' $oderQuery ";
+    } elseif($pesquisar == 'veiculo') {
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.veiculo LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%' $oderQuery";
+    } elseif($pesquisar == 'editoria') {
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.editoria LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%' $oderQuery";
+    } else {
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and (c.data LIKE '%$valor%' or c.titulo LIKE '%$valor%' or c.tags LIKE '%$valor%' or c.autor LIKE '%$valor%' or c.veiculo LIKE '%$valor%' or c.editoria LIKE '%$valor%') and c.data LIKE '%$ano%' and c.data  LIKE '%$mes%' $oderQuery";
+    }
+
+    return $conexao->query($query)->num_rows;
+}
+
 function listar($conexao, $inicio, $fim) {
     $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID LIMIT $inicio, $fim";
     $results = $conexao->query($query);
@@ -66,11 +89,13 @@ function buscar($conexao,$pesquisar,$valor, $ano, $mes, $inicio, $fim){
     } else {
         $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and (c.data LIKE '%$valor%' or c.titulo LIKE '%$valor%' or c.tags LIKE '%$valor%' or c.autor LIKE '%$valor%' or c.veiculo LIKE '%$valor%' or c.editoria LIKE '%$valor%') and c.data LIKE '%$ano%' and c.data  LIKE '%$mes%' $oderQuery LIMIT $inicio, $fim";
     }
-    
+
     $results = $conexao->query($query);
     
     return $results;
 }
+
+
 
 function buscarClipagem($conexao, $id) {
     $query_clipagem = "SELECT * from clipagens c where c.ID = $id;";

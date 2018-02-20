@@ -150,13 +150,26 @@ class FUNCTIONS {
         }
         //echo 'Inicio:' . $inicio . ' FIM:' . $fim;
         $lista = listar($conexao, $inicio, $fim);
+
+        $totalReg = FUNCTIONS::totalRegClipagens();
+
+        $_SESSION['totalReg'] = $totalReg;
+
+
         
         return $lista;
     }
-    
+
+        
     public static function totalRegClipagens(){
         $conexao = mysqlCon();
         $totalReg = getNumRows($conexao);
+        return $totalReg;
+    }
+    
+    public static function totalRegClipagensBusca($valor, $pesquisar, $ano, $mes){
+        $conexao = mysqlCon();
+        $totalReg = getNumRowsBusca($conexao, $valor, $pesquisar, $ano, $mes);
         return $totalReg;
     }
     
@@ -181,6 +194,9 @@ class FUNCTIONS {
         $mes = isset($_GET['mes']) && !empty($_GET['mes']) ? '/' . $_GET['mes'] . '/' : '';
         
         $lista = buscar($conexao,$pesquisar, $valor, $ano, $mes, $inicio, $fim);
+        $totalReg = FUNCTIONS::totalRegClipagensBusca($valor, $pesquisar, $ano, $mes);
+
+        $_SESSION['totalReg'] = $totalReg;
         return $lista;
     }
     

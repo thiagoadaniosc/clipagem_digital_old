@@ -168,14 +168,14 @@
             $regInicial = 1;
         }
 
-        if (($regFinal * $page) >= FUNCTIONS::totalRegClipagens()) {
-            $regFinal = FUNCTIONS::totalRegClipagens();
+        if (($regFinal * $page) >= $_SESSION['totalReg']) {
+            $regFinal = $_SESSION['totalReg'];
         } else {
             $regFinal = $regFinal * $page;
         }
 
         ?>
-        Listando <?= $regInicial ?> de <?= $regFinal ?> para <?= FUNCTIONS::totalRegClipagens(); ?> - Clipagens encontradas
+        Listando <?= $regInicial ?> de <?= $regFinal ?> para <?= $_SESSION['totalReg']?> - Clipagens encontradas
         </caption>
     </table>
     
@@ -186,8 +186,8 @@
             <?php $page = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1; ?>
             <?php $show = isset($_GET['show']) && !empty($_GET['show']) ? $_GET['show'] : 10; ?>
 
-            <?php $totalReg = FUNCTIONS::totalRegClipagens(); ?>
-            <?php $lastPage = ceil(FUNCTIONS::totalRegClipagens() / $show);  ?>
+            <?php $totalReg = $_SESSION['totalReg'] ?>
+            <?php $lastPage = ceil($totalReg / $show);  ?>
             <?php 
             if ($complete_request_uri == '/clipagens' || $complete_request_uri == '/') {
                 $pageURI = '/clipagens?page=';
