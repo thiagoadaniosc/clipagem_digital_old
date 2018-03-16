@@ -44,7 +44,7 @@ class FUNCTIONS {
         
         $titulo = FUNCTIONS::removeAccents($titulo);
         
-        $fileName = trim(mb_strtolower($titulo, 'UTF-8')). '_' . trim(mb_strtolower($veiculo, 'UTF-8')). '-' . $data . '.pdf';
+        $fileName = trim(mb_strtolower($titulo, 'UTF-8')). '_' . trim(mb_strtolower($veiculo, 'UTF-8')). '-' . $data . '- ' . $id_clipagem . '.pdf';
         $fileName = str_replace(' ', '_', $fileName);
         
         FUNCTIONS::uploadArquivos($conexao, $id_clipagem, $fileName);
@@ -120,7 +120,7 @@ class FUNCTIONS {
             
             $titulo = FUNCTIONS::removeAccents($titulo);
             
-            $fileName = trim(mb_strtolower($titulo, 'UTF-8')). '_' . trim(mb_strtolower($veiculo, 'UTF-8')). '-' . $data . '.pdf';
+            $fileName = trim(mb_strtolower($titulo, 'UTF-8')). '_' . trim(mb_strtolower($veiculo, 'UTF-8')). '-' . $data . '-' . $id . '.pdf';
             $fileName = str_replace(' ', '_', $fileName);
             
             $pdf->merge('file', 'uploads'. DIRECTORY_SEPARATOR . $fileName, 'P');

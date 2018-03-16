@@ -7,7 +7,7 @@ if ( !isset($security_flag) || $security_flag != true) {
 function mysqlCon() {
     $servidor = 'localhost';
     $usuario = 'root';
-    $senha = '';
+    $senha = 'root';
     $banco = 'clipagem_digital';
     
     $mysqli = new mysqli($servidor, $usuario, $senha, $banco);
@@ -63,7 +63,7 @@ function getNumRowsBusca($conexao, $valor, $pesquisar, $ano, $mes){
 }
 
 function listar($conexao, $inicio, $fim) {
-    $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID LIMIT $inicio, $fim";
+    $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID order by a.id_clipagem DESC LIMIT $inicio, $fim";
     $results = $conexao->query($query);
     return $results;
 }
@@ -87,7 +87,7 @@ function buscar($conexao,$pesquisar,$valor, $ano, $mes, $inicio, $fim){
     } elseif($pesquisar == 'editoria') {
         $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and c.editoria LIKE '%$valor%' and c.data LIKE '%$ano%' and c.data LIKE '%$mes%' $oderQuery  LIMIT $inicio, $fim";
     } else {
-        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and (c.data LIKE '%$valor%' or c.titulo LIKE '%$valor%' or c.tags LIKE '%$valor%' or c.autor LIKE '%$valor%' or c.veiculo LIKE '%$valor%' or c.editoria LIKE '%$valor%') and c.data LIKE '%$ano%' and c.data  LIKE '%$mes%' $oderQuery LIMIT $inicio, $fim";
+        $query = "SELECT a.id_clipagem, c.titulo, c.veiculo, c.editoria, c.autor, c.data, c.pagina, c.tipo, c.tags, a.nome, a.ID FROM clipagens c, arquivos a where a.id_clipagem = c.ID and (c.data LIKE '%$valor%' or c.titulo LIKE '%$valor%' or c.tags LIKE '%$valor%' or c.autor LIKE '%$valor%' or c.veiculo LIKE '%$valor%' or c.editoria LIKE '%$valor%' or a.id_clipagem LIKE '%$valor%') and c.data LIKE '%$ano%' and c.data  LIKE '%$mes%' $oderQuery LIMIT $inicio, $fim";
     }
 
     $results = $conexao->query($query);
