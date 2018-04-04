@@ -234,6 +234,14 @@ class FUNCTIONS {
             header('Location: /clipagens');   
         }
     }
+    public static function guestLogin($username){
+        $_SESSION['usuario'] = $username;
+        $_SESSION['nome'] = $username;
+        $_SESSION['admin'] = false;
+        $_SESSION['login'] = true;
+
+        return header('Location: /clipagens');
+    }
     
     public static function login(){
         // $conexao = mysqlCon();

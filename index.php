@@ -8,7 +8,7 @@ $complete_request_uri = $_SERVER['REQUEST_URI'];
 $request_uri = $request_uri[0];
 $request_method = $_SERVER['REQUEST_METHOD'];
 $security_flag = true;
-$version = '1.0 Stable';
+$version = '1.1.2 Stable';
 $version_beta = '1.6.4 Beta';
 $version_alfa = '1.9.2 Alfa';
 
@@ -21,7 +21,10 @@ require_once 'functions.php';
 
 if (!isset($_SESSION['login']) || $_SESSION['login'] != true) {
     if ($request_uri == '/logar') {
-        FUNCTIONS::login();      
+        FUNCTIONS::login();
+    } elseif ($request_uri == '/visitante' && isset($_GET['username'])){
+        $username = empty($_GET['username']) ? 'visitante' : $_GET['username'];
+        FUNCTIONS::guestLogin($username);
     } else {
         require_once 'login.php';
     }

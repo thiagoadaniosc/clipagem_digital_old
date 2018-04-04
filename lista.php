@@ -3,7 +3,7 @@
     <h1 class="text-left col-lg-12" style="padding: 20px;">Lista de Clipagens</h1>
     
     <form style="padding: 20px;" class="row col-lg-12 col-xl-12 col-md-12 col-sm-12 justify-content-end">
-        <div class="col-lg-12 col-xl-3 col-md-12">
+        <div class="col-lg-3 col-xl-3 col-md-12">
             <label class="col-lg-4 col-xl-4 float-left" style="padding-top:10px; padding-bottom:10px;" for="show">Exibir: </label>
             <select id="show" class="form-control col-lg-4 col-xl-4 float-left" name="show" style="height: 50px; border-radius: 0">
                 <?php if (isset($_GET['show']) && $_GET['show'] == 10): ?>
@@ -11,26 +11,37 @@
                 <option value="20">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
+                <option value="500">500</option>
                 <?php elseif(isset($_GET['show']) && $_GET['show'] == 20): ?>
                 <option value="10">10</option>
                 <option value="20" selected="selected">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
+                <option value="500">500</option>
                 <?php elseif(isset($_GET['show']) && $_GET['show'] == 50): ?>
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50" selected="selected">50</option>
                 <option value="100">100</option>
+                <option value="500">500</option>
                 <?php elseif(isset($_GET['show']) && $_GET['show'] == 100): ?>
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
                 <option value="100" selected="selected">100</option>
+                <option value="500">500</option>
+                <?php elseif(isset($_GET['show']) && $_GET['show'] == 500): ?>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="500" selected="selected">500</option>
                 <?php else : ?>
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
+                <option value="500">500</option>
                 <?php endif; ?>
             </select>
 
@@ -40,32 +51,38 @@
             } else {
 
                 if ($complete_request_uri == '/clipagens?show=10' || $complete_request_uri == '/clipagens?show=20' ||
-                $complete_request_uri == '/clipagens?show=50' || $complete_request_uri == '/clipagens?show=100'
-                ) {
+                $complete_request_uri == '/clipagens?show=50' || $complete_request_uri == '/clipagens?show=100' ||
+                $complete_request_uri == '/clipagens?show=500'){
                     $showLink = '';
-                }
-                elseif (explode("show=10", $complete_request_uri)[0] !== $complete_request_uri) {
+                } elseif (explode("show=10&", $complete_request_uri)[0] !== $complete_request_uri) {
                     $showLink = explode("show=10&", $complete_request_uri);
                     $showLink =  empty($showLink[1]) ? '' : $showLink[1];
-                }  elseif (explode("show=20", $complete_request_uri)[0] !== $complete_request_uri) {
+                }  elseif (explode("show=20&", $complete_request_uri)[0] !== $complete_request_uri) {
                     $showLink = explode("show=20&", $complete_request_uri);
                     $showLink =  empty($showLink[1]) ? '' : $showLink[1];
-                } elseif (explode("show=50", $complete_request_uri)[0] !== $complete_request_uri) {
+                } elseif (explode("show=50&", $complete_request_uri)[0] !== $complete_request_uri) {
+                    $showLink = explode("show=50&", $complete_request_uri);
                     $showLink =  empty($showLink[1]) ? '' : $showLink[1];
-                } elseif (explode("show=100", $complete_request_uri)[0] !== $complete_request_uri) {
+        
+                } elseif (explode("show=100&", $complete_request_uri)[0] !== $complete_request_uri) {
+                    $showLink = explode("show=100&", $complete_request_uri);
+                    $showLink =  empty($showLink[1]) ? '' : $showLink[1];        
+                } elseif (explode("show=500&", $complete_request_uri)[0] !== $complete_request_uri) {
+                    $showLink = explode("show=500&", $complete_request_uri);
                     $showLink =  empty($showLink[1]) ? '' : $showLink[1];
         
                 } else {
                     $showLink = '';
+
                 }
             
                 
             } ?>
             
-            <a data-link="<?= $showLink ?>" id="show-link" class="form-control btn btn-primary col-xl-4 col-lg-4" style="color: white; padding: 14px; border-radius: none;" onclick="showSubmit()">OK</a>
+            <a data-link="<?= $showLink ?>" id="show-link" class="form-control btn btn-primary col-xl-4 col-lg-4 rounded-0" style="color: white; padding: 14px; border-radius: 0 !important;" onclick="showSubmit()">OK</a>
         </div>
-        <div class="form-inline justify-content-end col-xl-9">
-            <select class="form-control" name="pesquisar" style="height: 50px; border-radius: 0">
+        <div class="form-inline justify-content-end col-xl-9 col-lg-9 col-md-12 col-sm-12">
+            <select class="form-control col-xl-2 col-lg-2 col-md-12 col-sm-12" name="pesquisar" style="height: 50px; border-radius: 0">
                 <option value="todos">Todos</option>
                 <option value="titulo">Título</option>
                 <option value="data">Data</option>
@@ -74,9 +91,9 @@
                 <option value="veiculo">Veículo</option>
                 <option value="editoria">Editoria</option>
             </select>
-            <input class="form-control" name="valor" type="search" placeholder="Pesquisar...">
-            <select class="form-control col-lg-2 col-xl-2" name="mes" style="height: 50px; border-radius: 0">
-                <option value="">Meses</option>
+            <input class="form-control col-xl-2 col-lg-2 col-md-12 col-sm-12" name="valor" type="search" placeholder="Pesquisar...">
+            <select class="form-control col-lg-2 col-xl-2 col-md-12 col-sm-12" name="mes" style="height: 50px; border-radius: 0">
+                <option value="">Mês</option>
                 <option value="01">Janeiro</option>
                 <option value="02">Fevereiro</option>
                 <option value="03">Março</option>
@@ -90,8 +107,8 @@
                 <option value="11">Novembro</option>
                 <option value="12">Dezembro</option>
             </select>
-            <input class="form-control col-lg-3 col-xl-2" type="number" name="ano" placeholder="Ano">
-            <button type="submit" class="btn btn-primary form-control" style="padding:14px; border-radius: 0">Pesquisar</button>
+            <input class="form-control col-lg-3 col-xl-2 col-md-12 col-sm-12" type="number" name="ano" placeholder="Ano">
+            <button type="submit" class="btn btn-primary form-control col-lg-2 col-xl-2 col-md-12 col-sm-12" style="padding:14px; border-radius: 0">Pesquisar</button>
             
         </div>
     </form>
@@ -107,7 +124,7 @@
         
     </p>
     <?php endif; ?>
-    <table class="table table-bordered table-hover table-sm col-lg-12">
+    <table class="table table-bordered table-hover table-sm col-lg-12" style="overflow: auto">
       
         <thead class="thead-light">
             <th scrope="col">#</th>
@@ -117,8 +134,8 @@
             <th scrope="col">Autor</th>
             <th scrope="col">Data de publicação</th>
             <th scrope="col">Página</th>
-            <th scrope="col" class="hidden-md">Tipo (Capa ou Interno)</th>
-            <th scrope="col">Tags</th>
+            <th scrope="col" class="d-xl-table-cell d-lg-table-cell d-md-none d-sm-none">Tipo (Capa ou Interno)</th>
+            <th scrope="col" class="d-xl-table-cell d-lg-table-cell d-md-none d-sm-none">Tags</th>
             <th scrope="col">Opções</th>
         </thead>
         <tbody>
@@ -144,8 +161,8 @@
                 <td><?=$dados['autor']?></td>
                 <td><?=$dados['data']?></td>
                 <td><?=$dados['pagina']?></td>
-                <td><?=$tipo?></td>
-                <td><?=$dados['tags']?></td>
+                <td class="d-xl-table-cell d-lg-table-cell d-md-none d-sm-none"><?=$tipo?></td>
+                <td class="d-xl-table-cell d-lg-table-cell d-md-none d-sm-none"><?=$dados['tags']?></td>
                 <td>
                     <a class="badge badge-primary" href="uploads/<?=$dados['nome']?>" target="_blank">Visualizar</a>
                     <?php if ($_SESSION['admin'] == true):?> 
