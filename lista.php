@@ -70,10 +70,15 @@
                 } elseif (explode("show=500&", $complete_request_uri)[0] !== $complete_request_uri) {
                     $showLink = explode("show=500&", $complete_request_uri);
                     $showLink =  empty($showLink[1]) ? '' : $showLink[1];
-        
+
                 } else {
                     $showLink = '';
 
+                }
+
+                if (isset($_GET['page'])) {
+                    //$showLink = explode('&page=', $showLink);
+                    $showLink = str_replace('page='.$_GET['page'], '', $showLink);;
                 }
             
                 
